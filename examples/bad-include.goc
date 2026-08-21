@@ -1,0 +1,12 @@
+/*
+ * Diese Datei demonstriert bewusst einen Fehler: .goh-Dateien enthalten
+ * Goc-Syntax (z.B. @classdecl) und dürfen daher nicht über den C-
+ * Präprozessor (#include), sondern nur über @include eingebunden werden.
+ *
+ * Nach dem Öffnen sollte die Zeile unten in der "Problems"-Ansicht und
+ * als rote Unterstreichung im Editor erscheinen.
+ */
+#include <stdapp.goh>
+
+/* Richtig wäre stattdessen: */
+@include <stdapp.goh>

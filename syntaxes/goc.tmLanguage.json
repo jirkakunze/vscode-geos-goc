@@ -1,0 +1,222 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "GOC",
+  "scopeName": "source.goc",
+  "fileTypes": ["goc", "goh"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#preprocessor" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#goc-object-block" },
+    { "include": "#goc-keywords" },
+    { "include": "#geos-messages" },
+    { "include": "#geos-types" },
+    { "include": "#c-keywords" },
+    { "include": "#storage-modifiers" },
+    { "include": "#operators" },
+    { "include": "#function-call" },
+    { "include": "#constants" }
+  ],
+  "repository": {
+
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.goc",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "captures": { "0": { "name": "punctuation.definition.comment.goc" } }
+        },
+        {
+          "name": "comment.line.double-slash.goc",
+          "begin": "//",
+          "end": "$",
+          "captures": { "0": { "name": "punctuation.definition.comment.goc" } }
+        }
+      ]
+    },
+
+    "preprocessor": {
+      "patterns": [
+        {
+          "name": "meta.preprocessor.include.goc",
+          "begin": "^\\s*(#\\s*include)\\b",
+          "beginCaptures": { "1": { "name": "keyword.control.directive.include.goc" } },
+          "end": "$",
+          "patterns": [
+            { "name": "string.quoted.other.lt-gt.include.goc", "match": "<[^>]+>" },
+            { "include": "#strings" }
+          ]
+        },
+        {
+          "name": "meta.preprocessor.macro.goc",
+          "match": "^\\s*(#\\s*(define|undef))\\b\\s*([A-Za-z_][A-Za-z0-9_]*)?",
+          "captures": {
+            "1": { "name": "keyword.control.directive.define.goc" },
+            "3": { "name": "entity.name.function.preprocessor.goc" }
+          }
+        },
+        {
+          "name": "keyword.control.directive.conditional.goc",
+          "match": "^\\s*#\\s*(if|ifdef|ifndef|elif|else|endif)\\b"
+        },
+        {
+          "name": "keyword.control.directive.pragma.goc",
+          "match": "^\\s*#\\s*(pragma|error|warning|line)\\b"
+        }
+      ]
+    },
+
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.goc",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [{ "name": "constant.character.escape.goc", "match": "\\\\." }]
+        },
+        {
+          "name": "string.quoted.single.goc",
+          "begin": "'",
+          "end": "'",
+          "patterns": [{ "name": "constant.character.escape.goc", "match": "\\\\." }]
+        }
+      ]
+    },
+
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.goc",
+          "match": "\\b0[xX][0-9a-fA-F]+[uUlL]*\\b"
+        },
+        {
+          "name": "constant.numeric.decimal.goc",
+          "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?[fFlL]?\\b"
+        },
+        {
+          "name": "constant.numeric.integer.goc",
+          "match": "\\b[0-9]+[uUlL]*\\b"
+        }
+      ]
+    },
+
+    "goc-object-block": {
+      "comment": "Deklaration von GOC-Klassen-/Objektblöcken, z.B. '@class MyClass, SuperClass;' oder '@object MyClass MyObject = { ... }'",
+      "begin": "\\b(@class|@classdecl|@object)\\b\\s+([A-Za-z_][A-Za-z0-9_]*)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.directive.goc" },
+        "2": { "name": "entity.name.class.goc" }
+      },
+      "end": "(?=[{;=])",
+      "patterns": [
+        {
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\b",
+          "name": "entity.other.inherited-class.goc"
+        },
+        { "include": "#comments" }
+      ]
+    },
+
+    "goc-keywords": {
+      "comment": "Vollständige Liste der Goc-Präprozessor-/Sprachdirektiven (siehe data/goc-keywords.json fuer Beschreibungen).",
+      "patterns": [
+        {
+          "name": "keyword.control.directive.goc",
+          "match": "@(reserveMessages|exportMessages|kbdAccelerator|importMessage|dispatchcall|elementArray|vardataAlias|genChildren|visChildren|chunkArray|protominor|specificUI|visMoniker|callsuper|classdecl|composite|genParent|prototype|visParent|dispatch|instance|optimize|default|gstring|include|message|noreloc|vardata|define|deflib|endlib|extern|header|ifndef|method|object|record|alias|chunk|class|endif|ifdef|reloc|stack|start|call|endc|link|send|uses|end|if)\\b"
+        },
+        {
+          "comment": "gcnList und _reloc sind laut Doku bewusst OHNE @-Präfix.",
+          "name": "keyword.control.directive.goc",
+          "match": "\\b(gcnList|_reloc)\\b"
+        },
+        {
+          "comment": "@call-Flags",
+          "name": "support.constant.goc",
+          "match": "\\b(forceQueue|checkDuplicate|checkLastOnly|insertAtFront|canDiscardIfDesperate|notDetachable)\\b"
+        }
+      ]
+    },
+
+    "geos-messages": {
+      "patterns": [
+        {
+          "name": "constant.other.message.goc",
+          "match": "\\b(MSG|C_MSG)_[A-Za-z0-9_]+\\b"
+        },
+        {
+          "name": "constant.other.attribute.goc",
+          "match": "\\b(ATTR|GI|VUI)_[A-Za-z0-9_]+\\b"
+        }
+      ]
+    },
+
+    "geos-types": {
+      "comment": "Übliche GEOS-/Watcom-16-Bit-Typen. Bei Bedarf erweitern.",
+      "patterns": [
+        {
+          "name": "storage.type.geos.goc",
+          "match": "\\b(word|dword|sword|sbyte|byte|fixed_t|fptr|lptr|optr|vmptr|Handle|MemHandle|FileHandle|GStateHandle|Boolean|TCHAR|ChunkHandle|LMemHandle|OptrType|WWFixedAsDWord|WBFixed)\\b"
+        }
+      ]
+    },
+
+    "c-keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.goc",
+          "match": "\\b(if|else|for|while|do|switch|case|default|break|continue|return|goto)\\b"
+        },
+        {
+          "name": "storage.type.goc",
+          "match": "\\b(void|char|short|int|long|float|double|signed|unsigned|struct|union|enum|typedef)\\b"
+        },
+        {
+          "name": "storage.modifier.goc",
+          "match": "\\b(const|static|extern|volatile|register|inline|far|near|pascal|cdecl|auto)\\b"
+        },
+        {
+          "name": "constant.language.goc",
+          "match": "\\b(NULL|TRUE|FALSE|sizeof)\\b"
+        }
+      ]
+    },
+
+    "storage-modifiers": {
+      "patterns": [
+        {
+          "name": "storage.modifier.calling-convention.goc",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*_(cdecl|pascal))\\b"
+        }
+      ]
+    },
+
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.goc",
+          "match": "(->|\\+\\+|--|&&|\\|\\||<<|>>|<=|>=|==|!=|[+\\-*/%&|^!~<>=])"
+        }
+      ]
+    },
+
+    "function-call": {
+      "patterns": [
+        {
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()",
+          "name": "entity.name.function.goc"
+        }
+      ]
+    },
+
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.other.enum.goc",
+          "match": "\\b[A-Z][A-Z0-9_]{2,}\\b"
+        }
+      ]
+    }
+  }
+}

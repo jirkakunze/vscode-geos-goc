@@ -1,0 +1,83 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "GEOS Parameters",
+  "scopeName": "source.gp",
+  "fileTypes": ["gp"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#fields" },
+    { "include": "#value-flags" },
+    { "include": "#keywords-as" }
+  ],
+  "repository": {
+
+    "comments": {
+      "name": "comment.line.number-sign.gp",
+      "match": "#.*$"
+    },
+
+    "strings": {
+      "name": "string.quoted.double.gp",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [{ "name": "constant.character.escape.gp", "match": "\\\\." }]
+    },
+
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.gp",
+          "match": "\\b0[xX][0-9a-fA-F]+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.gp",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+
+    "fields": {
+      "comment": "Alle erlaubten Top-Level-Schluesselwoerter der .gp-Datei (siehe data/gp-keywords.json fuer Beschreibungen).",
+      "name": "keyword.other.field.gp",
+      "match": "^\\s*\\b(tokenchars|usernotes|incminor|longname|platform|resource|library|publish|tokenid|appobj|driver|exempt|export|nosort|class|entry|stack|load|name|type)\\b"
+    },
+
+    "keywords-as": {
+      "name": "keyword.control.gp",
+      "match": "\\b(as|noload)\\b"
+    },
+
+    "value-flags": {
+      "comment": "Werte/Flags, die nach bestimmten Feldern erlaubt sind (type-Attribute, resource-Attribute, load-Combine-Typen).",
+      "patterns": [
+        {
+          "comment": "type-Attribute",
+          "name": "support.constant.type-attribute.gp",
+          "match": "\\b(process|appl|single|system|uses-coproc|needs-coproc|has-gcm|c-api)\\b"
+        },
+        {
+          "comment": "resource-Attribute",
+          "name": "support.constant.resource-attribute.gp",
+          "match": "\\b(read-only|preload|discardable|fixed|conforming|shared|discard-only|swap-only|ui-object|no-swap|no-discard)\\b"
+        },
+        {
+          "comment": "load-Combine-Typen (per Konvention in GROSSBUCHSTABEN)",
+          "name": "support.constant.combine-type.gp",
+          "match": "\\b(COMMON|PRIVATE|PUBLIC|STACK|RESOURCE)\\b"
+        },
+        {
+          "comment": "Ausrichtungstypen fuer load",
+          "name": "support.constant.align-type.gp",
+          "match": "\\b(byte|word|para|page)\\b"
+        },
+        {
+          "comment": "code/data/object/library sind sowohl Felder als auch Werte je nach Kontext",
+          "name": "support.constant.gp",
+          "match": "\\b(code|data|lmem|object|library|driver|class)\\b"
+        }
+      ]
+    }
+  }
+}

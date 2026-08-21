@@ -1,0 +1,326 @@
+[
+  {
+    "keyword": "@alias",
+    "syntax": "@alias(<protoMsg>) <messageDef>;",
+    "description": "The @alias keyword is used for messages which take conditional parameters in an assembly handler. For example, if the assembly handler takes a word parameter normally and a dword only if a certain flag is set, you will need to have two C messages with the two different parameters. The @alias keyword allows this.",
+    "seeAlso": "@message"
+  },
+  {
+    "keyword": "@call",
+    "syntax": "<ret> = @call [,<flags>] [{<cast_ret>}] \\",
+    "description": "The @call keyword sends the specified message to the specified object and makes the caller wait until the message is processed before continuing. The arguments of @call are shown below:",
+    "seeAlso": "@send, @callsuper, @message, @method, @object"
+  },
+  {
+    "keyword": "@callsuper",
+    "syntax": "<ret> = @callsuper [{<cast_ret>}] \\",
+    "description": "The @callsuper keyword does two things: The most useful is to pass a received message on to the superclass to ensure default behavior is preserved; the second, and less used, acts just like @call but sends the message to the recipient's superclass rather than the recipient's class.",
+    "seeAlso": "@call, @send, @message, @method"
+  },
+  {
+    "keyword": "@chunk",
+    "syntax": "@chunk  <type> <name> [= <init>];",
+    "description": "The @chunk keyword declares a resource chunk containing data of some kind. Data can be of any GEOS or C data type or structure, including a string of characters. The chunk must be declared between the resource delimiters @start and @end. Its arguments are described below:",
+    "seeAlso": "@start, @end, @object, @extern"
+  },
+  {
+    "keyword": "@chunkArray",
+    "syntax": "@chunkArray     <stype> <aname> [= {<init>}];",
+    "description": "The @chunkArray keyword declares a Chunk Array, a special kind of chunk. Only uniform-element-size chunk arrays may be declared with this keyword. It has the following arguments:",
+    "seeAlso": "@chunk, @elementArray"
+  },
+  {
+    "keyword": "@class",
+    "syntax": "@class  <cname>, <super> [, master [, variant]];",
+    "description": "The @class keyword begins a class definition. All instance data and messages for the class are declared between @class and @endc. The arguments of @class are listed below:",
+    "seeAlso": "@endc, @classdecl"
+  },
+  {
+    "keyword": "@classdecl",
+    "syntax": "@classdecl <cname> [, neverSaved];",
+    "description": "The @classdecl keyword defines a given class structure in memory. Every new class that will be used by an application must appear in an @classdecl declaration. The arguments for this keyword are shown below:",
+    "seeAlso": "@class"
+  },
+  {
+    "keyword": "@composite",
+    "syntax": "@instance @composite <iname> = <linkFieldName>;",
+    "description": "The @composite keyword appears as a subcommand of @instance. It is a type of instance data - it indicates that an object of this class can have several children and that the @composite instance data field will be an optr to the first of its children. The arguments of the @composite keyword are given below:",
+    "seeAlso": "@instance, @link"
+  },
+  {
+    "keyword": "@default",
+    "syntax": "<fname> = @default [<op> [~]<attr>]*; /* to use default value of",
+    "description": "The @default keyword can be used in several ways: to specify the default value of an instance data field, to represent the default value of an object's instance data field, or to specify the default superclass of a variant class.",
+    "seeAlso": "@object, @instance, @class"
+  },
+  {
+    "keyword": "@define",
+    "syntax": "@define <mname>[(<pdef>)] <macro>",
+    "description": "The @define directive defines a Goc macro. You can define C macros with the \\#define directive; macros that use Goc operators, keywords, or code must be defined with @define.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@deflib",
+    "syntax": "@deflib <libName>",
+    "description": "Most Goc libraries will have a .goh header file. This file should begin with a @deflib directive. This will see to it that no library header file is included more than once in a given compilation. The file must end with an @endlib directive. The @deflib directive takes the following argument:",
+    "seeAlso": "@endlib"
+  },
+  {
+    "keyword": "@dispatch",
+    "syntax": "@dispatch [noFree] [{<cast>}] <nObj>::<nMsg>::<event>;",
+    "description": "The @dispatch keyword sends a previously-encapsulated message to the specified object. This keyword is analogous to @send; use @dispatchcall if the event must be processed immediately. The encapsulated event must have been defined with @record. The arguments of @dispatch are given below:",
+    "seeAlso": "@record, @send, @dispatchcall"
+  },
+  {
+    "keyword": "@dispatchcall",
+    "syntax": "<ret> = @dispatchcall [noFree] [{<cast>}] <nObj>::<nMsg>::<event>;",
+    "description": "The @dispatchcall keyword sends a previously-encapsulated message to the specified object. This keyword is analogous to @call; use @dispatch if the event can be sent with no return values. The encapsulated event must have been defined with @record. The arguments of @dispatchcall are given below:",
+    "seeAlso": "@record, @send, @dispatchcall"
+  },
+  {
+    "keyword": "@elementArray",
+    "syntax": "@elementArray   <stype> <aname> [= {<init>}];",
+    "description": "The @elementArray keyword declares an Element Array, a special kind of Chunk Array. It has the following arguments:",
+    "seeAlso": "@chunk, @chunkArray"
+  },
+  {
+    "keyword": "@end",
+    "syntax": "@end    <segname>",
+    "description": "The @end keyword denotes the end of a resource block definition that had been started with @start. Its one argument is the name of the resource segment.",
+    "seeAlso": "@start, @header, @object, @chunk"
+  },
+  {
+    "keyword": "@endc",
+    "syntax": "@endc",
+    "description": "The @endc keyword denotes the end of a class definition begun with @class. It has no arguments.",
+    "seeAlso": "@class"
+  },
+  {
+    "keyword": "@endif",
+    "syntax": "@endif",
+    "description": "The @endif directive denotes the end of a block of conditionally-compiled code. It is used with @if, @ifdef, and @ifndef.",
+    "seeAlso": "@if, @ifdef, @ifndef"
+  },
+  {
+    "keyword": "@endlib",
+    "syntax": "@endlib",
+    "description": "Most Goc libraries will have a .goh header file. This file should end with an @endlib directive. This will see to it that no library header file is included more than once in a given compilation. The file must begin with an @deflib directive.",
+    "seeAlso": "@deflib"
+  },
+  {
+    "keyword": "@exportMessages",
+    "syntax": "@exportMessages <expname>, <num>;",
+    "description": "The @exportMessages keyword sets aside a number of message spots so the messages may be declared elsewhere. This allows users of the class to declare messages that are guaranteed to be unique across all subclasses. Exported messages are declared with the @importMessage keyword.",
+    "seeAlso": "- @importMessage, @reserveMessages, @message"
+  },
+  {
+    "keyword": "@extern",
+    "syntax": "@extern <type> <name>;",
+    "description": "The @extern keyword allows code in a given compilation session to access objects, chunks, monikers, and methods defined in another compilation session. The compiler will assume the element exists and will be linked by the Glue linker.",
+    "seeAlso": "@chunk, @object, @visMoniker"
+  },
+  {
+    "keyword": "gcnList",
+    "syntax": "gcnList(<manufID>,<lname>) = <oname> [, <oname>]*;",
+    "description": "The gcnList keyword, which does not have the keyword marker @ preceeding it, puts the listed objects onto the specified notification list. GCN lists are specified by both manufacturer ID and list type. The arguments of the gcnList keyword are given below:",
+    "seeAlso": "@object"
+  },
+  {
+    "keyword": "@genChildren",
+    "syntax": "@send @genChildren::<msg>(<params>);",
+    "description": "Any composite object in a generic object tree (therefore a subclass of GenClass) can send a message that will be dispatched at once to all of its children.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@genParent",
+    "syntax": "[@send | @call]@genParent::<msg>(<params>);",
+    "description": "Any composite object in a generic object tree (therefore a subclass of GenClass) can use the @genParent address to send a message to its generic parent. This can be used with either @send or @call.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@gstring",
+    "syntax": "@gstring <gsname> = {[<command> [, <command>]+]}",
+    "description": "The @gstring keyword lets you declare a GString in Goc source code.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@header",
+    "syntax": "@header <type> [= <init>];",
+    "description": "The @header keyword sets the header of an object or data resource segment to a custom structure. The structure must begin with an LMemBlockHeader or ObjLMemBlockHeader. The arguments of @header are given below:",
+    "seeAlso": "@start, @end, @object, @chunk"
+  },
+  {
+    "keyword": "@if",
+    "syntax": "@if (<cond>)",
+    "description": "The @if directive denotes the beginning of a conditionally-compiled block of code. If the expression detailed in cond equates to true, then the code between the @if directive and the first corresponding @endif directive will be compiled with the rest of the code.",
+    "seeAlso": "@ifdef, @ifndef, @endif"
+  },
+  {
+    "keyword": "@ifdef",
+    "syntax": "@ifdef <item>",
+    "description": "The @ifdef directive is similar to the @if directive in use, except the condition it evaluates is based solely on whether the item is defined or not (if item is defined, the following code is compiled).",
+    "seeAlso": "@if, @ifndef, @endif"
+  },
+  {
+    "keyword": "@ifndef",
+    "syntax": "@ifndef <item>",
+    "description": "The @ifndef directive is similar to the @ifdef directive in use, except the condition it evaluates is based solely on whether item is not defined (if item is not defined, the following code is compiled).",
+    "seeAlso": "@if, @ifdef, @endif"
+  },
+  {
+    "keyword": "@importMessage",
+    "syntax": "@importMessage <expname>, <messageDef>;",
+    "description": "The @importMessage keyword declares a message with a reserved message number set aside earlier by @exportMessages. The arguments of this keyword are given below:",
+    "seeAlso": "@exportMessages, @reserveMessages, @message"
+  },
+  {
+    "keyword": "@include",
+    "syntax": "@include <fname>",
+    "description": "The @include directive is used to include Goc files into a code file. It is similar to the #include directive in C. Its only argument is a file name (fname) enclosed in either angled brackets or quotation marks.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@instance",
+    "syntax": "@instance <insType> <iname> = <default>;",
+    "description": "The @instance keyword declares an instance data field for a class. This keyword will appear between the class delimeters @class and @endc. Its arguments are shown below:",
+    "seeAlso": "@vardata, @visMoniker, @link, @composite, @kbdAccelerator"
+  },
+  {
+    "keyword": "@kbdAccelerator",
+    "syntax": "@instance @kbdAccelerator <iname>;",
+    "description": "The @kbdAccelerator keyword follows @instance to create an instance data field that will contain a keyboard accelerator. The iname argument is the name of the instance data field.",
+    "seeAlso": "@instance"
+  },
+  {
+    "keyword": "@link",
+    "syntax": "@instance @link <iname>;",
+    "description": "The @link keyword follows @instance to define a link instance data field pointing to the object's next sibling in the object hierarchy. The iname argument is the name of the instance data field. Note that the name of the link field must be set as the default value of the corresponding @composite field.",
+    "seeAlso": "@instance, @composite"
+  },
+  {
+    "keyword": "@message",
+    "syntax": "@message    <retType> <mname>([@stack] <param>*);",
+    "description": "The @message keyword defines a message and its parameters and return values. This keyword will appear within a class definition (i.e., between @class and @endc). The message defined with @message will automatically be valid for the class for which it is defined as well as for subclasses of that class.",
+    "seeAlso": "@method, @reserveMessages, @exportMessages, @importMessage, @record"
+  },
+  {
+    "keyword": "@method",
+    "syntax": "@method [<hname>,] <cname>, <mname>+ [{<code>}];",
+    "description": "The @method keyword begins definition of a method (message handler). Its arguments are listed below:",
+    "seeAlso": "- @message"
+  },
+  {
+    "keyword": "@noreloc",
+    "syntax": "@noreloc <iname>;",
+    "description": "The @noreloc keyword specifies that an instance data field (defined in the previous program statement) is not relocatable.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@object",
+    "syntax": "@object <class> <name> <flags>* = {",
+    "description": "The @object keyword defines an object in an object resource block. It must appear between @start and @end. Its arguments are defined below:",
+    "seeAlso": "@start, @end, @extern, @class, @instance, @vardata"
+  },
+  {
+    "keyword": "@optimize",
+    "syntax": "@optimize",
+    "description": "This directive may be placed at the top of a .goh file. The directive instructs Goc to generate a specially processed .poh file which contains all the information of the .goh file, but is somewhat faster to compile.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@protominor",
+    "syntax": "@protominor <prototypeName>",
+    "description": "When creating a new version of an existing library, use the @protominor keyword to declare new messages and variable data fields for a class. Suppose your original class declaration looked like so:",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@prototype",
+    "syntax": "@prototype <messageDef>;",
+    "description": "The @prototype keyword allows multiple messages to have the same pass and return parameters. Use @prototype to define the pass and return values, then use @message to declare the messages that have these parameters.",
+    "seeAlso": "@alias, @message"
+  },
+  {
+    "keyword": "@record",
+    "syntax": "<event> = @record <obj>::<msg>(<param>*);",
+    "description": "The @record keyword encapsulates an event for later use with @dispatch or @dispatchcall. The arguments of @record are as follows:",
+    "seeAlso": "@dispatch, @dispatchcall, @call, @send"
+  },
+  {
+    "keyword": "@reloc",
+    "syntax": "@reloc  <iname>, [(<count>, <struct>)] <ptrType>;",
+    "description": "The @reloc keyword designates an instance data field that contains data requiring relocation on startup. Note that this does not include instance fields declared with the @composite and @link fields, but it does include any handle or pointer fields you may have.",
+    "seeAlso": "@instance, @vardata"
+  },
+  {
+    "keyword": "_reloc",
+    "syntax": "@method [<hname>,] <cname>, _reloc { <code>};",
+    "description": "The _reloc keyword is used to write relocation handlers for classes, if you need to relocate-unrelocate instance data when it's either read in or saved to state.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@reserveMessages",
+    "syntax": "@reserveMessages <number>;",
+    "description": "The @reserveMessages keyword reserves the given number of message spots. Messages are numbered sequentially according to the order of their declaration; this keyword allows one or more numbers to be skipped in the numbering process, allowing application upgrades without making earlier versions obsolete.",
+    "seeAlso": "@exportMessages, @importMessage, @message"
+  },
+  {
+    "keyword": "@send",
+    "syntax": "@send   [<flags>+] [(<cast_ret>)] <obj>::[{<cast_par>}]<msg>(<param>*);",
+    "description": "The @send keyword sends a given message to the specified object. The message will be sent and the sender's thread will continue executing without waiting for a response. If return values or synchronization is important, use the @call keyword. The parameters of @send are shown below:",
+    "seeAlso": "@call, @callsuper, @message, @method"
+  },
+  {
+    "keyword": "@specificUI",
+    "syntax": "<fname> = [@specificUI] <mod>* <key>;",
+    "description": "The @specificUI keyword is used when setting a keyboard accelerator instance field in an object declaration. It tells the UI to allow the use of the keystrokes specified, even if they are normally reserved for the specific UI.",
+    "seeAlso": "GenClass, @kbdAccelerator, @instance"
+  },
+  {
+    "keyword": "@stack",
+    "syntax": "@message    <retType> <mname>([@stack] <param>*);",
+    "description": "This keyword may be used if the message might be sent from assembly language code instead of Goc. It indicates that the arguments will be passed on the stack; the handler will pop them off the stack in reverse order from the way they are listed in the declaration.",
+    "seeAlso": "@message"
+  },
+  {
+    "keyword": "@start",
+    "syntax": "@start  <segname> [, <flags>];",
+    "description": "The @start keyword indicates the beginning of a resource block. The end of the block is denoted by the keyword @end. The arguments of @start are listed below:",
+    "seeAlso": "@end, @header, @object, @chunk"
+  },
+  {
+    "keyword": "@uses",
+    "syntax": "@uses <class>;",
+    "description": "If you know that a variant class will always be resolved to be a subclass of some particular class, you can declare this with the @uses keyword. This will let the variant class define handlers for the \"used\" superclass. The keyword uses the following argument:",
+    "seeAlso": "@class"
+  },
+  {
+    "keyword": "@vardata",
+    "syntax": "@vardata    <type> <vname>;",
+    "description": "The @vardata keyword creates a vardata data type for a class. Each type created with @vardata can be simply the name of the type, or it can have additional data (a single structure). The arguments of @vardata are given below:",
+    "seeAlso": "@vardataAlias, @instance"
+  },
+  {
+    "keyword": "@vardataAlias",
+    "syntax": "@vardataAlias (<origName>) <newType> <newName>;",
+    "description": "The @vardataAlias keyword allows you to set up variable data fields with varying amounts of extra data. That is, a single variable data field in the instance chunk could have two different sizes and two different names. The arguments of @vardataAlias are listed below:",
+    "seeAlso": "@vardata, @instance"
+  },
+  {
+    "keyword": "@visChildren",
+    "syntax": "@send @visChildren::<msg>(<params>);",
+    "description": "Any composite object in a visible object tree (therefore a subclass of VisCompClass) can send a message that will be dispatched at once to all of its children. Note that any message sent with @visChildren as the destination must be dispatched with the @send keyword and therefore can have no return value.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@visParent",
+    "syntax": "@send @visParent::<msg>(<params>);",
+    "description": "Any object in a visible tree can use @visParent as the destination of an @call command. The message will be sent to the object's parent in the visible object tree. The remainder of the command is the same as a normal @call.",
+    "seeAlso": ""
+  },
+  {
+    "keyword": "@visMoniker",
+    "syntax": "@instance @visMoniker <iname>;",
+    "description": "The @visMoniker keyword follows @instance to create an instance data field for a visual moniker. The iname argument is the name of the instance data field.",
+    "seeAlso": "@instance, **GenClass**"
+  }
+]

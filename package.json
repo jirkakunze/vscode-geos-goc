@@ -1,0 +1,105 @@
+{
+  "name": "vscode-geos-goc",
+  "displayName": "PC/GEOS GOC Language Support",
+  "description": "Syntax highlighting for GOC (GEOS Object C) and related PC/GEOS source files. Built to be extended with snippets, build tasks, and more.",
+  "version": "0.1.0",
+  "publisher": "your-publisher-name",
+  "author": "Jirka Kunze",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TODO-username/vscode-geos-goc.git"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "geos",
+    "pc-geos",
+    "freegeos",
+    "goc",
+    "watcom"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:goc",
+    "onLanguage:geos-gp"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "PC/GEOS GOC",
+      "properties": {
+        "geos-goc.sdkEnvVar": {
+          "type": "string",
+          "default": "ROOT_DIR",
+          "description": "Name der Umgebungsvariable, die bei der SDK-Installation gesetzt wird und auf das SDK-Wurzelverzeichnis zeigt (Standard: ROOT_DIR). Wird für die Include-Navigation (#include/@include) benötigt. Leer lassen, um nur \"includePaths\" bzw. die Watcom-INCLUDE-Umgebungsvariable zu verwenden."
+        },
+        "geos-goc.sdkIncludeSubdirs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["CInclude"],
+          "description": "Unterverzeichnisse relativ zum SDK-Wurzelverzeichnis (geos-goc.sdkEnvVar), die für #include/@include mit spitzen Klammern durchsucht werden (Standard: CInclude). Bei Bedarf um weitere Verzeichnisse ergänzen."
+        },
+        "geos-goc.includePaths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Zusätzliche, absolute Verzeichnisse für die Include-Navigation (#include/@include mit spitzen Klammern). Werden vor den SDK-Unterverzeichnissen durchsucht."
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "goc",
+        "aliases": [
+          "GOC",
+          "GEOS Object C",
+          "goc"
+        ],
+        "extensions": [
+          ".goc",
+          ".goh"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "geos-gp",
+        "aliases": [
+          "GEOS Parameters",
+          "gp"
+        ],
+        "extensions": [
+          ".gp"
+        ],
+        "configuration": "./language-configuration-gp.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "goc",
+        "scopeName": "source.goc",
+        "path": "./syntaxes/goc.tmLanguage.json"
+      },
+      {
+        "language": "geos-gp",
+        "scopeName": "source.gp",
+        "path": "./syntaxes/gp.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0",
+    "@vscode/vsce": "^2.24.0"
+  }
+}

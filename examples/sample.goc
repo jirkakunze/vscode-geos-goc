@@ -1,0 +1,48 @@
+/*
+ * Beispiel-GOC-Datei zum Testen des Syntax-Highlightings, Foldings,
+ * der Outline und der Include-Navigation.
+ * Testet insbesondere: @start/@end, @class/@endc, @if/@endif.
+ * Für ein Beispiel eines Include-Verstoßes siehe bad-include.goc.
+ */
+#include <geos.h>
+#include <ec.h>
+@include <stdapp.goh>
+
+#define MAX_SPRITES 64
+
+typedef struct {
+    word    x;
+    word    y;
+    fixed_t scale;
+} SpriteInfo;
+
+@class MyObjectClass, GenClass;
+    @message void MSG_MY_OBJECT_UPDATE(word count);
+@endc
+
+@object MyObjectClass MyObject = {
+    MOI_count = 0;
+}
+
+@ifdef DEBUG_BUILD
+    #define TRACE(x) EC_ERROR(x)
+@endif
+
+@method MyObjectClass, MSG_MY_OBJECT_UPDATE {
+    word    result = 0;
+    fixed_t delta;
+
+    if (count > MAX_SPRITES) {
+        result = FALSE;
+    } else {
+        delta = FixedMulPureC(self->velocity, self->time);
+        result = TRUE;
+    }
+
+    return result;
+}
+
+@start MyDataResource, data, notDetachable;
+    @chunk word     MyWordChunk;
+    @chunk char     MyStringChunk[8] = "Hello";
+@end

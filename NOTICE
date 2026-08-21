@@ -1,0 +1,10 @@
+vscode-geos-goc
+Copyright 2026 Jirka Kunze
+
+This product includes software developed by Jirka Kunze,
+licensed under the Apache License, Version 2.0.
+
+The files data/goc-keywords.json and data/gp-keywords.json contain
+keyword syntax and descriptions derived from the official documentation
+of the FreeGEOS project (https://github.com/FreeGEOS/ <!-- TODO: exakte Repo-URL ergänzen -->),
+also licensed under the Apache License, Version 2.0.
