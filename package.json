@@ -2,7 +2,7 @@
   "name": "vscode-geos-goc",
   "displayName": "PC/GEOS GOC Language Support",
   "description": "Syntax highlighting for GOC (GEOS Object C) and related PC/GEOS source files. Built to be extended with snippets, build tasks, and more.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "your-publisher-name",
   "author": "Jirka Kunze",
   "license": "Apache-2.0",

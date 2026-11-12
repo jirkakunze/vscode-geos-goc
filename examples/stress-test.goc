@@ -1,0 +1,44 @@
+#include <geos.h>
+@include <stdapp.goh>
+
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#undef OLD_MACRO
+#if defined(DEBUG)
+#elif defined(RELEASE)
+#else
+#endif
+#error "not supported"
+#warning "check this"
+#line 42 "foo.c"
+
+/* Kommentar mit @class und MSG_FOO sollte NICHT hervorgehoben werden */
+// Zeilenkommentar mit @object ebenfalls nicht
+
+enum Color { RED, GREEN, BLUE };
+struct Point { word x; word y; };
+union Value { word w; byte b; };
+
+word GetValue(word index, fixed_t scale)
+{
+    word local = 0777;
+    float f = 1.5f;
+    double d = 1.5e10;
+    char esc = '\n';
+    char hex = '\x1B';
+    char *s = "line1\nline2\ttab";
+    local = GetValue(index, scale);
+    return local;
+}
+
+@class MyClass, GenClass;
+    @message void MSG_FOO(word count);
+@endc
+
+@method MyClass, MSG_FOO {
+    word result = 0;
+    MemHandle h = NULL;
+    if (result == MSG_FOO) {
+        result = TRUE;
+    }
+    return result;
+}

@@ -23,7 +23,7 @@ License: Apache License 2.0 (see [LICENSE](LICENSE) and [NOTICE](NOTICE))
    grab it from this repo's [releases](../../releases) if available).
 2. Install it in VSCode:
    ```bash
-   code --install-extension vscode-geos-goc-0.1.0.vsix
+   code --install-extension vscode-geos-goc-0.2.0.vsix
    ```
    Alternatively via the GUI: Extensions view (`Ctrl+Shift+X`) → `...` menu
    → "Install from VSIX..." → select the file.
@@ -55,7 +55,7 @@ npm install -g @vscode/vsce
 npm run package
 ```
 
-This produces `vscode-geos-goc-0.1.0.vsix` in the project directory,
+This produces `vscode-geos-goc-0.2.0.vsix` in the project directory,
 installable as described under [Option A](#option-a-install-a-prebuilt-vsix).
 
 ## Development / Testing
@@ -107,8 +107,10 @@ subdirectories).
 
 ## Features at a glance
 
-- **Syntax highlighting** for `.goc`/`.goh` (all 54 Goc directives) and `.gp`
-  (all 20 parameter fields, including allowed values/flags).
+- **Syntax highlighting** for `.goc`/`.goh`: full, canonical C highlighting
+  (via VSCode's built-in `source.c` grammar) plus all 54 Goc directives,
+  layered on top at every nesting level – and `.gp` (all 20 parameter
+  fields, including allowed values/flags).
 - **Folding** for `@start`/`@end`, `@class`/`@endc`, `@deflib`/`@endlib`, and
   `@if`/`@ifdef`/`@ifndef`/`@endif`.
 - **Hover tooltips**: hovering over a Goc keyword (e.g. `@vardataAlias`) or
@@ -148,6 +150,7 @@ vscode-geos-goc/
 ├── examples/
 │   ├── sample.goc                  # Test file (highlighting, folding, outline, include navigation)
 │   ├── bad-include.goc             # Demonstrates the .goh/#include error
+│   ├── stress-test.goc             # Exercises full C syntax nested inside Goc constructs
 │   ├── sample.gp                   # Test file for .gp highlighting
 │   └── fake-sdk/CInclude/          # Minimal "SDK" for the example setup (via ROOT_DIR in launch.json)
 └── tsconfig.json
@@ -241,16 +244,33 @@ not the balance of regular `{ }` braces in C code.
 
 ## Extending
 
-The grammar in `syntaxes/goc.tmLanguage.json` is organized into named
-sections (`repository`), including:
+The GOC grammar (`syntaxes/goc.tmLanguage.json`) builds on top of VSCode's
+built-in C grammar (`source.c`, always bundled with VSCode) instead of
+reimplementing C highlighting by hand. This gives full, canonical C
+highlighting (all preprocessor directives, escape sequences, number formats,
+function-definition-vs-call distinction, struct/union/enum tags, ...) for
+free. The Goc-specific extensions are layered on top via a **TextMate
+injection** (`injections."L:source.goc -comment -string"`), which applies
+them at *every* nesting level – inside function bodies, struct fields,
+parameter lists, etc. – not just at the top level of the file. The `-comment
+-string` exclusion prevents Goc keywords mentioned inside comments or string
+literals from being misinterpreted as real directives.
 
-- `comments`, `strings`, `numbers`, `preprocessor` – generic C
-- `goc-object-block`, `goc-keywords` – `@class`/`@object`/`@method` etc.
-- `geos-messages` – `MSG_*`, `C_MSG_*`, `ATTR_*`, `GI_*`
+The `repository` section only needs to contain what's genuinely Goc-specific:
+
+- `goc-object-block` – highlights the class/superclass names in
+  `@class`/`@classdecl`/`@object` declarations
+- `goc-include` – `@include <...>`/`"..."` (analogous to C's `#include`, but
+  Goc-specific since it's not valid C syntax)
+- `goc-keywords` – all 54 `@`-prefixed directives, plus the two exceptions
+  without `@` (`gcnList`, `_reloc`), plus `@call` flag constants
+- `geos-messages` – `MSG_*`, `C_MSG_*`, `ATTR_*`, `GI_*`, `VUI_*`
 - `geos-types` – `word`, `dword`, `fixed_t`, `optr`, `ChunkHandle`, ...
 
 **Adding new keywords/types:** extend the appropriate regex in the relevant
-rule (e.g. add more types from your codebase to `geos-types`).
+rule (e.g. add more types from your codebase to `geos-types`). Everything
+else (plain C syntax) is handled automatically via the injected `source.c`
+grammar and needs no maintenance here.
 
 **Other possible extensions:**
 - Snippets: `contributes.snippets` in `package.json` plus a `snippets/goc.json`.
@@ -258,12 +278,21 @@ rule (e.g. add more types from your codebase to `geos-types`).
 - `.gp` field-value validation (e.g. warn about invalid `type` attributes).
 - Nested outline (methods as children of their class).
 - Language server (go-to-definition, find references for `MSG_*`).
+- Inline assembly (`_asm { ... }`, `#pragma aux`) as an embedded x86 region.
 
 ## Known limitations
 
-- Highlighting, outline, include navigation, and diagnostics are all
+- Highlighting for Goc-specific constructs (directives, message constants,
+  GEOS types), outline, include navigation, and diagnostics are all
   regex-/scan-based rather than built on a real parser. Very unusually
   formatted code (e.g. multiple directives on one line) can be misdetected.
+  Standard C syntax, on the other hand, is handled by VSCode's canonical
+  built-in `source.c` grammar and should be as accurate as in a plain `.c`
+  file.
+- The Goc grammar assumes VSCode's built-in C grammar (scope `source.c`) is
+  available, which is always the case in a standard VSCode installation (it
+  ships in-box and cannot be disabled). No separate extension install is
+  required for this.
 - Include resolution does not account for conditional compilation
   (`@ifdef`/`#ifdef`) – an include inside an inactive branch is still
   resolved/checked.
