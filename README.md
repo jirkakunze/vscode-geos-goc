@@ -10,7 +10,7 @@ License: Apache License 2.0 (see [LICENSE](LICENSE) and [NOTICE](NOTICE))
 ## Requirements
 
 - [Visual Studio Code](https://code.visualstudio.com/) ≥ 1.75
-- [Node.js](https://nodejs.org/) ≥ 18 (for building/development; not
+- [Node.js](https://nodejs.org/) ≥ 20 (for building/development; not
   required to simply install a prebuilt `.vsix`)
 - A PC/GEOS SDK with the `ROOT_DIR` environment variable set (needed for
   include navigation; all other features work without an SDK as well)
